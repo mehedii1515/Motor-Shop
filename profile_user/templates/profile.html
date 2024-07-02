@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+{% block content %}
+
+<section style="height: 100vh;">
+  <div class="text-center">
+    <h1 class="text-center pb-3">Profile Page</h1>
+    <a class="btn btn-danger" href="{% url 'edit_profile' %}"
+      >Edit Your Profile</a
+    >
+  </div>
+  <div class="d-flex flex-wrap justify-content-center px-5 pt-5">
+    {% for purchase in purchases %}
+    <div class="col-sm-3 mb-3 mb-sm-0 my-3">
+      <div class="card me-2 h-100">
+        <div class="card-body">
+          <img src="{{purchase.car.image.url}}" class="card-img-top" alt="..." />
+          <h5 class="card-title pt-3">{{purchase.car.car_name}}</h5>
+          <p class="card-text">Price : {{purchase.car.car_price}}</p>
+          <p>Brand : {{purchase.car.brand.name}}</p>
+          <button class="btn btn-primary btn-sm m-0">
+            <a
+              style="color: white"
+              href="{% url 'detail_car' purchase.car.id %}"
+              class="text-decoration-none"
+              >View Details</a
+            >
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

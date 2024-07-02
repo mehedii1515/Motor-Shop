@@ -1,0 +1,70 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+{% block content %}
+<section
+  class="row d-flex align-items-center justify-content-center"
+  style="height: 100vh"
+>
+  <div class="col-sm-6 mb-3 mb-sm-0 p-5">
+    <div class="card mx-2 h-100">
+      <div class="card-body">
+        <img
+          src="{{car.image.url}}"
+          class="card-img-top"
+          alt="..."
+          style="width: 100%"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 text-center" style="padding: 120px">
+    <h1 style="font-size: 60px;" class="card-title fw-bold">{{car.car_name}}</h1>
+    <p class="card-text fs-3 fw-medium">Price : {{car.car_price}}</p>
+    {% if request.user.is_authenticated %}
+    <p class="card-text fs-4 text-danger-emphasis fw-medium">Quantity : {{car.quantity}}</p>
+    {% endif %}
+    <p><span class="fs-5 fw-medium">Description :</span>{{car.description}}</p>
+    <p class="fs-4 fw-medium">Brand : {{car.brand.name}}</p>
+    <p>
+      {% if request.user.is_authenticated %}
+      <button style="padding: 10px 30px;" class="btn btn-success btn-sm m-0 text-white">
+        <a
+          style="color: white"
+          href="{% url 'buy_now' car.id %}"
+          class="text-decoration-none fw-bold"
+          >Buy Now</a
+        >
+      </button>
+      {% endif %}
+    </p>
+  </div>
+</section>
+
+<section>
+  <!-- Comment Show area start -->
+  <div class="card mx-2">
+    <h5 style="background-color: #555555; width: 14%; color: #ffffff;" class="p-3 mb-4">Total Comments: {{comments | length}}</h5>
+    {% for comment in comments %}
+    <div class="card-body border m-2">
+      <p>
+        <b>{{comment.name}}</b>
+        <span class="text-dark-emphasis">said on {{ comment.created_on|date:'F d, Y H:i' }}</span>
+      </p>
+      <p>{{comment.body}}</p>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Comment Show area end -->
+  <!-- Comment area start -->
+  <div class="card mx-2">
+    <div class="card-body">
+      <form method="post">
+        <h1 class="text-center">Add Comment</h1>
+        {% csrf_token %} {{comment_form | crispy}}
+        <button style="padding: 10px 30px;" class="btn btn-success btn-sm m-0 fw-bold text-white">Submit</button>
+      </form>
+    </div>
+  </div>
+  <!-- Comment area end -->
+</section>
+{% endblock %}
